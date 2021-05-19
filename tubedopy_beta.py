@@ -1,5 +1,4 @@
 from pytube import YouTube as yt
-from pytube.contrib.playlist import Playlist as pl
 import pytube
 import os
 
