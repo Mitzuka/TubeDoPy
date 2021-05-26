@@ -1,4 +1,5 @@
 /__pycache__
+/tubedopy/dependencies/__pycache__
 /venv
 *.gif
 tubedopy.py

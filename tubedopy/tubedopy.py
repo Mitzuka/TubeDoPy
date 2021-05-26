@@ -22,10 +22,10 @@ class tubedopy():
         audio.download()
 
 
-    def convert_aud(self, url=None, ext=None):
+    def change_ext(self, url=None, ext=None):
 
         file_name = yt(url).title
-        ext = '.mp4' if ext == None else ext
+        ext = '.mp3' if ext == None else ext
 
         for a in '\\/<>"?|*:':
             file_name = file_name.replace(a , '')
@@ -41,16 +41,17 @@ class tubedopy():
         return pl(purl).get_urls()
 
 
-    def get_name(self, url=None):
+    def get_title(self, url=None):
         return yt(url).title
+
 
 if __name__ == '__main__':
     import time
     yolo = tubedopy()
-    url = 'https://www.youtube.com/watch?v=DH4vLA-6AkI'
+    url = 'https://www.youtube.com/watch?v=0BIaDVnYp2A'
     purl = 'https://www.youtube.com/playlist?list=PLuZo1HaJOTyzjiYG0dq-RXA7fhTqd64j3'
-    yolo.download_aud(url)
-    yolo.convert_aud(url)
+    # yolo.download_aud(url)
+    yolo.change_ext(url)
     # yolo.check_url(url)
     '''
     start = time.time()
