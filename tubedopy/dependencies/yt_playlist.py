@@ -4,7 +4,11 @@ import os
 class yt_playlist():
 
     def __init__(self, playlist_url=None):
-        self.playlist_url = playlist_url
+
+        end = len(playlist_url) if playlist_url.find('&index') == -1 else playlist_url.find('&index')
+        playlist_key = playlist_url[playlist_url.rindex('list=') + 5:end]
+
+        self.playlist_url = f'https://www.youtube.com/playlist?list={playlist_key}'
         self._get_html()
         self._get_param()
      
@@ -50,6 +54,7 @@ class yt_playlist():
         with open('temp_file','w',encoding='utf-8') as f:
             for i in html.text:
                 f.write(i)
+
     
 
     def __del__(self):
@@ -57,6 +62,6 @@ class yt_playlist():
         
 
 if __name__ == '__main__':
-    links = yt_playlist('https://www.youtube.com/playlist?list=PLuZo1HaJOTyz8LPb3X4AQHuku1qjoATZK')
+    links = yt_playlist('https://www.youtube.com/watch?v=Y_jaL9Q5C-A&list=PLuZo1HaJOTyxRuytW8jXJK78eXaug5fut&index=6')
     print(links.get_urls())
     print(links.count_list())
