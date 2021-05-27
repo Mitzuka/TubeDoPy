@@ -10,7 +10,7 @@ Music Downloader from Youtube based in pytube library.
 Tested in W10 and Ubuntu 20.04
 
 Versions:
-  - Python 3.9.0 
+  - Python 3.8.0 
   - pytube 10.8.1
   - requests 2.25.1
 
