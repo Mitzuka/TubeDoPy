@@ -1,7 +1,9 @@
 from pytube import YouTube as yt
 from dependencies import directory_control as dc
 from dependencies import yt_playlist as pl
+import concurrent.futures
 import pytube
+import sys
 import os
 
 class tubedopy():
@@ -22,7 +24,7 @@ class tubedopy():
         audio.download()
 
 
-    def change_ext(self, url=None, ext=None):
+    def aud_convert(self, url=None, ext=None):
 
         file_name = yt(url).title
         ext = '.mp3' if ext == None else ext
@@ -33,7 +35,7 @@ class tubedopy():
         for entry in os.scandir():
             if not entry.name.startswith('.') and entry.is_file():
                 if file_name in entry.name:
-                    os.replace(entry.name, f'{file_name}{ext}')
+                    os.system(f'ffmpeg -i "{entry.name}" -vn -y "{file_name+ext}" -loglevel error')
                     break
 
 
@@ -46,27 +48,48 @@ class tubedopy():
 
 
 if __name__ == '__main__':
-    import time
-    yolo = tubedopy()
-    url = 'https://www.youtube.com/watch?v=0BIaDVnYp2A'
-    purl = 'https://www.youtube.com/playlist?list=PLuZo1HaJOTyzjiYG0dq-RXA7fhTqd64j3'
-    # yolo.download_aud(url)
-    yolo.change_ext(url)
-    # yolo.check_url(url)
-    '''
-    start = time.time()
-    ars = yolo.get_purls(purl)[72:]
-    for urls in ars:
-        try:
-            yolo.download_aud(urls)
-        except:
-            print(f'No se pudo descargar la cancion {yolo.get_name(urls)}.')
-            continue
-        print(f'La cancion {yolo.get_name(urls)} se descargo correctamente')
-        yolo.convert_aud(urls)
-        print(f'La cancion {yolo.get_name(urls)} se convirtio correctamente')
+
+    import logging
+    import argparse
+
+    tdp = tubedopy()
+
+    def __check_command():
+        parser = argparse.ArgumentParser(prog='TubeDoPy')
+        parser.add_argument("-pl", "--playlist", default=None, help="To download the playlist from the link")
+        parser.add_argument("-l", "--link", default=None, help="Download the link's song")
+        args = parser.parse_args()
     
-    end = time.time()
-    print('Descarga completa')
-    print(f'Tiempo de descarga -> {end - start}')
-    '''
+        if args.playlist:
+            __multi_download(args.playlist)
+        if args.link:
+            try:
+                tdp.download_aud(args.link)
+            except:
+                print(f'Failed to download')
+                os._exit()
+            print('Download Complete\nStarting convertion...')
+            tdp.aud_convert(args.link)
+            print('Downloaded succesfully!')
+
+
+    def __multi_download(purl=None):
+        
+        urls_list = tdp.get_purls(purl)
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+            future_to_download = {executor.submit(__down_convert, url): url for url in urls_list}
+
+
+    def __down_convert(url=None):
+        try:
+            tdp.download_aud(url)
+        except:
+            print(f'Failed to download -> {tdp.get_name(url)}')
+            return
+        print('Download Complete\nStarting convertion...')
+        tdp.aud_convert(url)
+        print(f'{tdp.get_name(url)} Downloaded succesfully!')
+
+
+    __check_command()

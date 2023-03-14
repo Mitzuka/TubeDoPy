@@ -59,9 +59,3 @@ class yt_playlist():
 
     def __del__(self):
         os.remove('./temp_file')
-        
-
-if __name__ == '__main__':
-    links = yt_playlist('https://www.youtube.com/watch?v=Y_jaL9Q5C-A&list=PLuZo1HaJOTyxRuytW8jXJK78eXaug5fut&index=6')
-    print(links.get_urls())
-    print(links.count_list())

@@ -31,8 +31,3 @@ class directory_control():
                     break
                 except FileNotFoundError:
                     os.system(f'mkdir {self.path}')
-                    
-
-if __name__ == '__main__':
-    ref = directory_control()
-    ref.change_path()

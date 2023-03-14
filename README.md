@@ -7,12 +7,25 @@ Music Downloader from Youtube based in pytube library.
   pip install requests
 ```
 
+The program also needs the framework "ffmpeg", you can download in the next link:
+    https://ffmpeg.org/download.html
+
+** IMPORTANT **
+You need add the directory of the framework to the PATH system.
+If you don't know how to do this, follow the next links:
+
+    Windows: https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/
+      Linux: https://phoenixnap.com/kb/linux-add-to-path
+
+
 Tested in W10 and Ubuntu 20.04
 
+
 Versions:
-  - Python 3.8.0 
-  - pytube 10.8.1
-  - requests 2.25.1
+  - Python 3.11.2 
+  - pytube 12.1.2
+  - requests 2.28.2
+
 
 Quickstart
 
@@ -32,4 +45,8 @@ Only the basic use appears here.
 ...     tdp.chang_ext(url=urls, ext='mp3')
 ```
 
-Playlist doesn't work with playlist's made by youtube.
+Also you can give an url to the file "tubedopy.py" as parameter in the console to download the music.
+
+" C:\"random_path">python tubedopy -pl https://www.youtube.com/playlist?list=PLuZo1HaJOTyxRuytW8jXJK78eXaug5fut "
+
+The file "tubedopy.py" receive the parameters -pl and -l for the playlist and the single song, respectively.
