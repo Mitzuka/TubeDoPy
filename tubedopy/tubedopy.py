@@ -10,11 +10,17 @@ class tubedopy():
     
     
     def __init__(self):
+
+        # This line creates the directory "TubeDoPy" in C:/Users/%USERNAME%/Music
+        # After that, change the path to download in that directory.
+
         dc().change_path()
 
 
     def check_url(self, url=None):
+
         return yt(url).check_availability()
+
 
 
     def download_aud(self, url=None):
@@ -24,7 +30,11 @@ class tubedopy():
         audio.download()
 
 
+
     def aud_convert(self, url=None, ext=None):
+
+        # Start a search in the current path to seek the recently download
+        # then calls the framework from console to convert the ".webm" file.
 
         file_name = yt(url).title
         ext = '.mp3' if ext == None else ext
@@ -39,7 +49,12 @@ class tubedopy():
                     break
 
 
+
     def get_purls(self, purl=None):
+
+        # Obtains the url's and create an file to 
+        # save them temporaly.
+
         return pl(purl).get_urls()
 
 
@@ -52,9 +67,14 @@ if __name__ == '__main__':
     import logging
     import argparse
 
+
     tdp = tubedopy()
 
+
     def __check_command():
+
+        # Read the command line if the script was called in a command shell.
+
         parser = argparse.ArgumentParser(prog='TubeDoPy')
         parser.add_argument("-pl", "--playlist", default=None, help="To download the playlist from the link")
         parser.add_argument("-l", "--link", default=None, help="Download the link's song")
@@ -74,6 +94,8 @@ if __name__ == '__main__':
 
 
     def __multi_download(purl=None):
+
+        # Starts a download of a playlist with 5 threads.
         
         urls_list = tdp.get_purls(purl)
 
