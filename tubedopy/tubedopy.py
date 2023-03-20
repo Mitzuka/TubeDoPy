@@ -44,7 +44,6 @@ class tubedopy():
        
         for entry in os.scandir():
             if not entry.name.startswith('.') and entry.is_file():
-                print(f"file_name={file_name} entry_name={entry.name}")
                 if file_name in entry.name:
                     os.system(f'ffmpeg -i "{entry.name}" -vn -y "{file_name+ext}" -loglevel error')
                     os.system('del /A:- "*.webm" "*.mp4"') if rem_file else None
@@ -71,8 +70,6 @@ if __name__ == '__main__':
 
 
     tdp = tubedopy()
-    remove_bool = False
-
 
     def __check_command():
 
@@ -84,15 +81,18 @@ if __name__ == '__main__':
         parser.add_argument("-l", "--link", default=None, help="Download the link's song")
         parser.add_argument("-r", "--replace", action=argparse.BooleanOptionalAction, help="Removes the video format when the convertion is done")
         args = parser.parse_args()
+
+
+        remove_file = False
     
         if args.replace:
-            remove_bool = True
+            remove_file = True
 
         if args.playlist:
             __multi_download(args.playlist)
+            os.system('del /A:- "*.webm" "*.mp4"') if remove_file else None
 
         if args.link:
-            
             song_name = tdp.get_title(args.link)
 
             try:
@@ -101,7 +101,7 @@ if __name__ == '__main__':
                 print(f'Failed to download')
                 os._exit()
             print('Download Complete\nStarting convertion...')
-            tdp.aud_convert( name=song_name, rem_file=remove_bool )
+            tdp.aud_convert( name=song_name, rem_file=remove_file )
             print('Downloaded succesfully!')
 
 
@@ -110,7 +110,6 @@ if __name__ == '__main__':
         # Starts a download of a playlist with 5 threads.
         
         urls_list = tdp.get_purls(purl)
-
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
             future_to_download = {executor.submit(__down_convert, url): url for url in urls_list}
 
@@ -125,7 +124,7 @@ if __name__ == '__main__':
             print(f'Failed to download -> {song_name}')
             return
         print('Download Complete\nStarting convertion...')
-        tdp.aud_convert( name=song_name, rem_file=remove_bool )
+        tdp.aud_convert( name=song_name )
         print(f'{song_name} Downloaded succesfully!')
 
 
