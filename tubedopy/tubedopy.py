@@ -46,7 +46,7 @@ class tubedopy():
             if not entry.name.startswith('.') and entry.is_file():
                 if file_name in entry.name:
                     os.system(f'ffmpeg -i "{entry.name}" -vn -y "{file_name+ext}" -loglevel error')
-                    os.system('del /A:- "*.webm" "*.mp4"') if rem_file else None
+                    if rem_file: self.remove_file()
                     break
 
 
@@ -61,6 +61,13 @@ class tubedopy():
 
     def get_title(self, url=None):
         return yt(url).title
+
+
+    def remove_file(self):
+        if os.system('del /A:- "*.webm" "*.mp4"') == 1:
+            os.system('rm *.mp4 *.webm')
+
+        
 
 
 if __name__ == '__main__':
@@ -90,7 +97,7 @@ if __name__ == '__main__':
 
         if args.playlist:
             __multi_download(args.playlist)
-            os.system('del /A:- "*.webm" "*.mp4"') if remove_file else None
+            tdp.remove_file()
 
         if args.link:
             song_name = tdp.get_title(args.link)
